@@ -1,1 +1,54 @@
-<h2>Index內容</h2>
+{{!-- 選單 --}}
+<div class="mt-5 form-container">
+  <form class="d-flex flex-row" action="/" method="POST">
+    <div class=" category-group input-group" style="width:400px;margin:0 auto">
+      <select class="form-select col" id="categoryId" name="categoryId" onchange="this.form.submit()">
+        <option selected disabled hidden>類別</option>
+        <option value="all">全部</option>
+        {{#each categories}}
+        <option value="{{this._id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </form>
+</div>
+{{!-- 總金額 --}}
+<div class="container mt-3" style="text-align:center">
+  <h4 style="font-weight:bold">總金額</h4>
+  <h1 name="totalAmount" style="font-weight:bold;color:darkgoldenrod">{{totalAmount}}</h1>
+</div>
+
+{{!-- 支出明細 --}}
+<div class="mb-3" style="display:flex;justify-content:center">
+    <a class="btn btn-outline-primary mt-3" href="./expense/new">新增支出</a>
+</div>
+<div class="table-container" style="width:60%;margin:0 auto ">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col" style="width:20%">類別</th>
+        <th scope="col" style="width:30%">項目</th>
+        <th scope="col" style="width:15%">日期</th>
+        <th scope="col" style="width:15%">金額</th>
+        <th scope="col" style="width:20%"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each items}}
+      <tr style="vertical-align: middle">
+        <th scope="row"><i class="{{this.categoryId.icon}}"></i>{{this.categoryId.name}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.date}}</td>
+        <td>{{this.cost}}</td>
+        <td>
+          <a class="btn btn-success" href="./expense/{{this._id}}/edit" role="button">修改</a>
+          <form action="/expense/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
+            <button class="btn btn-danger" type="submit">刪除</button>
+          </form>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+</div>

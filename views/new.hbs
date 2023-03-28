@@ -1,0 +1,51 @@
+<div class="form-container m-3" style="display:flex;justify-content:center;">
+  <form action="/expense" method="POST" style="item-align:center">
+    <div class="container">
+
+      <div class="mt-5" style="display:flex;justify-content:space-around">
+        <div class="pt-3">
+          <a style="font-size: x-small;">*為必填欄位</a>
+        </div>
+        <div style="display:flex;justify-content:center">
+          <h4>請輸入支出項目</h4>
+        </div>
+      </div>
+
+      <div class="mt-3 mb-3">
+        <label for="name" class="me-4">名稱*：</label>
+        <input type="text" id="name" name="name"
+          style="height:40px;width:220px;border:1px solid black;border-radius:5px;vertical-align:center" {{#if
+          name}}value="{{name}}" {{/if}} required>
+      </div>
+
+      <div class="mt-5 mb-3">
+        <label for="date" class="me-4">日期*：</label>
+        <input type="date" id="date" name="date"
+          style="height:40px;width:220px;border:1px solid black;border-radius:5px;vertical-align:center" {{#if
+          name}}value="{{date}}" {{/if}} required>
+      </div>
+
+      <div class="mt-5 mb-3" style="display: flex;">
+        <label for="category" class="me-4" style="vertical-align:center">類別*：</label>
+        <select class="form-select col" id="categoryId" style="width:220px;border:1px solid black" name="categoryId"
+          required>
+          <option selected disabled hidden>請選擇</option>
+          {{#each categories}}
+          <option value="{{this._id}}">{{this.name}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div class="mt-5 mb-3">
+        <label for="cost" class="me-4">金額*：</label>
+        <input type="number" id="cost" name="cost"
+          style="height:40px;width:220px;border:1px solid black;border-radius:5px;vertical-align:center" {{#if
+          cost}}value="{{cost}}" {{/if}} required>
+      </div>
+
+      <div class="mb-3" style="display:flex;justify-content:center">
+        <button class="btn btn-outline-primary mt-3" type="submit">新增</button>
+      </div>
+    </div>
+  </form>
+</div>
