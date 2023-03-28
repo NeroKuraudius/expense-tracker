@@ -1,1 +1,96 @@
-<h2>Index內容</h2>
+{{!-- 選單 --}}
+<div class="mt-5 form-container">
+  <form class="d-flex flex-row" action="#">
+    <div class=" category-group input-group" style="width:400px;margin:0 auto">
+      <select class="form-select col">
+        <option selected disabled hidden>類別</option>
+        <option value="all">全部</option>
+        <option value="rent">家居物業</option>
+        <option value="transport">交通出行</option>
+        <option value="entertainment">休閒娛樂</option>
+        <option value="diet">餐飲食品</option>
+        <option value="other">其他</option>
+      </select>
+    </div>
+  </form>
+</div>
+{{!-- 總金額 --}}
+{{> totalAmount}}
+
+{{!-- 支出明細 --}}
+
+<div class="table-container" style="width:60%;margin:0 auto ">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col" style="width:20%">類別</th>
+        <th scope="col" style="width:30%">項目</th>
+        <th scope="col" style="width:15%">日期</th>
+        <th scope="col" style="width:15%">金額</th>
+        <th scope="col" style="width:20%"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row"><i class="{{CATEGORY.家居物業}}"></i>家居物業</th>
+        <td>房租</td>
+        <td>3/19</td>
+        <td>9750</td>
+        <td>
+          <a class="btn btn-success" href="#" role="button">修改</a>
+          <form action="#" style="display: inline;">
+            <button class="btn btn-danger" type="submit">刪除</button>
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row"><i class="{{CATEGORY.交通出行}}"></i>交通出行</th>
+        <td>電動機車電池費</td>
+        <td>3/10</td>
+        <td>799</td>
+        <td>
+          <a class="btn btn-success" href="#" role="button">修改</a>
+          <form action="#" style="display: inline;">
+            <button class="btn btn-danger" type="submit">刪除</button>
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row"><i class="{{CATEGORY.休閒娛樂}}"></i>休閒娛樂</th>
+        <td>遊戲光碟片</td>
+        <td>3/6</td>
+        <td>499</td>
+        <td>
+          <a class="btn btn-success" href="#" role="button">修改</a>
+          <form action="#" style="display: inline;">
+            <button class="btn btn-danger" type="submit">刪除</button>
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row"><i class="{{CATEGORY.餐飲食品}}"></i>餐飲食品</th>
+        <td>聚餐</td>
+        <td>3/3</td>
+        <td>1200</td>
+        <td>
+          <a class="btn btn-success" href="#" role="button">修改</a>
+          <form action="#" style="display: inline;">
+            <button class="btn btn-danger" type="submit">刪除</button>
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row"><i class="{{CATEGORY.其他}}"></i>其他</th>
+        <td>違停罰鍰</td>
+        <td>3/1</td>
+        <td>600</td>
+        <td>
+          <a class="btn btn-success" href="#" role="button">修改</a>
+          <form action="#" style="display: inline;">
+            <button class="btn btn-danger" type="submit">刪除</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
