@@ -8,8 +8,20 @@ const CATEGORY = {
   其他: 'fa-solid fa-pen'
 }
 
+// 首頁
 router.get('/', (req, res) => {
   res.render('index', { CATEGORY })
 })
+
+// 新增頁面
+router.get('/new',(req,res)=>{
+  res.render('new')
+})
+
+// 新增支出
+router.post('/new',(req,res)=>{
+  
+})
+
 
 module.exports = router
