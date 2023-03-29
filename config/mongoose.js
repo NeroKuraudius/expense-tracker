@@ -10,7 +10,6 @@ const db = mongoose.connection
 
 db.once('open', () => {
   console.log('MongoDB connected!')
-  db.close()
 })
 db.on('error', () => {
   console.log(err)
