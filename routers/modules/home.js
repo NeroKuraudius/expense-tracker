@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const Expense = require('../../models/Expense')
+
 const CATEGORY = {
   家居物業: 'fa-solid fa-house',
   交通出行: 'fa-solid fa-van-shuttle',
@@ -14,13 +16,15 @@ router.get('/', (req, res) => {
 })
 
 // 新增頁面
-router.get('/new',(req,res)=>{
+router.get('/new', (req, res) => {
   res.render('new')
 })
 
 // 新增支出
-router.post('/new',(req,res)=>{
-  
+router.post('/new', (req, res) => {
+  const { name, date, category, cost } = req.body
+
+  res.redirect('/')
 })
 
 
