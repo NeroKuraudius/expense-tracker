@@ -24,4 +24,8 @@ router.post('/', (req, res) => {
     .catch(err => console.log(err))
 })
 
+
+// 刪除支出
+router.delete('/')
+
 module.exports = router
