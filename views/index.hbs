@@ -38,7 +38,7 @@
         <td>{{this.date}}</td>
         <td>{{this.cost}}</td>
         <td>
-          <a class="btn btn-success" href="#" role="button">修改</a>
+          <a class="btn btn-success" href="./expense/{{this._id}}/edit" role="button">修改</a>
           <form action="/expense/{{this._id}}?_method=DELETE" method="POST" style="display: inline;">
             <button class="btn btn-danger" type="submit">刪除</button>
           </form>

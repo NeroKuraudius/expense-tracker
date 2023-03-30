@@ -15,13 +15,35 @@ router.get('/new', (req, res) => {
   res.render('new')
 })
 
+
 // 新增支出
 router.post('/', (req, res) => {
   const { name, date, category, cost } = req.body
 
+  if (!name || !date || !category || !cost) {
+    res.render('new', { name, date, category, cost })
+  }
+
   Expense.create({ name, date, category, cost })
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
+})
+
+
+// 修改支出頁面
+router.get('/:id/edit', (req, res) => {
+  const id = req.params.id
+
+  Expense.findById(id)
+    .lean()
+    .then(item => res.render('edit', { item }))
+    .catch(err => console.log(err))
+})
+
+
+// 修改支出
+router.put(':id/edit', (req, res) => {
+  const id = req.params.id
 })
 
 
@@ -30,7 +52,7 @@ router.delete('/:id', (req, res) => {
   const id = req.params.id
 
   return Expense.findById(id)
-    .then(item => item.deleteOne({ id }))
+    .then(item => item.deleteOne({ id })) // 舊版是 collection.remove()
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
