@@ -42,8 +42,13 @@ router.get('/:id/edit', (req, res) => {
 
 
 // 修改支出
-router.put(':id/edit', (req, res) => {
+router.put('/:id', (req, res) => {
   const id = req.params.id
+  const { name, date, category, cost } = req.body
+
+  return Expense.findOneAndUpdate({ _id: id }, { name, date, category, cost })
+    .then(() => res.redirect('/'))
+    .catch(err => console.log(err))
 })
 
 
@@ -52,7 +57,7 @@ router.delete('/:id', (req, res) => {
   const id = req.params.id
 
   return Expense.findById(id)
-    .then(item => item.deleteOne({ id })) // 舊版是 collection.remove()
+    .then(item => item.deleteOne({ id })) // 舊版是 item.remove()
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
