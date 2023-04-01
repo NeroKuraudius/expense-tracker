@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 const Category = require('../Category')
 const categoryList = [
-  { name: '家居物業', icon: 'fa-solid fa-house' },
-  { name: '交通出行', icon: 'fa-solid fa-van-shuttle' },
   { name: '休閒娛樂', icon: 'fa-solid fa-face-grin-beam' },
+  { name: '其他', icon: 'fa-solid fa-pen' },
+  { name: '家居物業', icon: 'fa-solid fa-house' },
   { name: '餐飲食品', icon: 'fa-solid fa-face-grin-beam' },
-  { name: '其他', icon: 'fa-solid fa-pen' }
+  { name: '交通出行', icon: 'fa-solid fa-van-shuttle' }
 ]
 
 if (process.env.NODE_ENV !== 'production') {

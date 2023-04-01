@@ -1,15 +1,13 @@
 {{!-- 選單 --}}
 <div class="mt-5 form-container">
-  <form class="d-flex flex-row" action="#">
+  <form class="d-flex flex-row" action="/" method="POST">
     <div class=" category-group input-group" style="width:400px;margin:0 auto">
-      <select class="form-select col">
+      <select class="form-select col" id="sort" name="sort" onchange="this.form.submit()">
         <option selected disabled hidden>類別</option>
-        <option value="all">全部</option>
-        <option value="rent">家居物業</option>
-        <option value="transport">交通出行</option>
-        <option value="entertainment">休閒娛樂</option>
-        <option value="diet">餐飲食品</option>
-        <option value="other">其他</option>
+        <option id="all" value="all">全部</option>
+        {{#each categories}}
+        <option value="{{this._id}}">{{this.name}}</option>
+        {{/each}}
       </select>
     </div>
   </form>
@@ -33,7 +31,7 @@
     <tbody>
       {{#each items}}
       <tr>
-        <th scope="row"><i class="圖示"></i>{{this.category}}</th>
+        <th scope="row"><i class="{{this.categoryId.icon}}"></i>{{this.categoryId.name}}</th>
         <td>{{this.name}}</td>
         <td>{{this.date}}</td>
         <td>{{this.cost}}</td>
