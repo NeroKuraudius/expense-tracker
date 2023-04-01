@@ -5,7 +5,7 @@ const Category = require('../../models/Category')
 
 // 新增頁面
 router.get('/new', (req, res) => {
-  Category.find()
+  return Category.find()
     .lean()
     .then(categories => res.render('new', { categories }))
     .catch(err => console.log(err))
@@ -16,7 +16,13 @@ router.get('/new', (req, res) => {
 router.post('/', (req, res) => {
   const { name, date, categoryId, cost } = req.body
 
-  Expense.create({ name, date, categoryId, cost })
+  if (!name || !date || !categoryId || !cost){
+    return Category.findById(categoryId)
+      .lean()
+      .then(category => res.render('new', { name ,date,cost}))
+  }
+
+  return Expense.create({ name, date, cost, categoryId })
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
@@ -26,9 +32,15 @@ router.post('/', (req, res) => {
 router.get('/:id/edit', (req, res) => {
   const id = req.params.id
 
-  Expense.findById(id)
+  return Category.find()
     .lean()
-    .then(item => res.render('edit', { item }))
+    .then(categories => {
+      return Expense.findById(id)
+        .populate('categoryId')
+        .lean()
+        .then(item => res.render('edit', { item, categories }))
+        .catch(err => console.log(err))
+    })
     .catch(err => console.log(err))
 })
 
