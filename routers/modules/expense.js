@@ -16,10 +16,10 @@ router.get('/new', (req, res) => {
 router.post('/', (req, res) => {
   const { name, date, categoryId, cost } = req.body
 
-  if (!name || !date || !categoryId || !cost){
+  if (!name || !date || !categoryId || !cost) {
     return Category.findById(categoryId)
       .lean()
-      .then(category => res.render('new', { name ,date,cost}))
+      .then(category => res.render('new', { name, date, cost }))
   }
 
   return Expense.create({ name, date, cost, categoryId })
@@ -48,9 +48,9 @@ router.get('/:id/edit', (req, res) => {
 // 修改支出
 router.put('/:id', (req, res) => {
   const id = req.params.id
-  const { name, date, category, cost } = req.body
+  const { name, date, categoryId, cost } = req.body
 
-  return Expense.findOneAndUpdate({ _id: id }, { name, date, category, cost })
+  return Expense.findOneAndUpdate({ _id: id }, { name, date, categoryId, cost })
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })

@@ -2,9 +2,9 @@
 <div class="mt-5 form-container">
   <form class="d-flex flex-row" action="/" method="POST">
     <div class=" category-group input-group" style="width:400px;margin:0 auto">
-      <select class="form-select col" id="sort" name="sort" onchange="this.form.submit()">
+      <select class="form-select col" id="categoryId" name="categoryId" onchange="this.form.submit()">
         <option selected disabled hidden>類別</option>
-        <option id="all" value="all">全部</option>
+        <option value="all">全部</option>
         {{#each categories}}
         <option value="{{this._id}}">{{this.name}}</option>
         {{/each}}

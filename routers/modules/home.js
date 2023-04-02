@@ -21,9 +21,28 @@ router.get('/', (req, res) => {
 
 // 顯示資料排序
 router.post('/', (req, res) => {
-  const sorter = req.body
-  console.log(req.body)
-  res.redirect('/')
+  const { categoryId } = req.body
+
+  Category.find()
+    .lean()
+    .then((categories) => {
+      if (categoryId === 'all') {
+        return Expense.find()
+          .populate('categoryId') // 以'categoryId'欄位把Expense跟Category資料庫關聯
+          .lean()
+          .sort({ date: 'desc' })
+          .then(items => res.render('index', { items, categories }))
+          .catch(err => console.log(err))
+      } else {
+        return Expense.find({ categoryId })
+          .populate('categoryId') // 以'categoryId'欄位把Expense跟Category資料庫關聯
+          .lean()
+          .sort({ date: 'desc' })
+          .then(items => res.render('index', { items, categories }))
+          .catch(err => console.log(err))
+      }
+    })
+    .catch(err => console.log(err))
 })
 
 
