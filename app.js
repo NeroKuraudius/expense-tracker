@@ -4,6 +4,7 @@ const router = require('./routers')
 const methodOverride = require('method-override')
 const session = require('express-session')
 const usePassport = require('./config/passport')
+const flash = require('connect-flash')
 require('./config/mongoose')
 
 const app = express()
@@ -22,6 +23,7 @@ app.use(session({
 }))
 
 usePassport(app)
+app.use(flash())
 app.use(router)
 
 app.listen(port, () => {
