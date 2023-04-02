@@ -6,9 +6,14 @@
     <div class="container-fluid" style="justify-content:space-between">
       <a class="navbar-brand" href="/" style="color: yellow;">
         <i class="fa-solid fa-coins" style="color: #ece509;"></i>
+        {{#if isAuthenticated}}
+        {{user.name}}的記帳本
+        {{else}}
         家庭記帳本
+        {{/if}}
       </a>
-      <a href="/users/logout" class="btn btn-outline-light" type="submit" style="float:right">Logout</a>
+      {{#if isAuthenticated}}
+      <a href="/users/logout" class="btn btn-outline-light" type="submit" style="float:right">Logout</a>{{/if}}
     </div>
   </nav>
 
