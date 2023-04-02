@@ -14,6 +14,7 @@ router.get('/new', (req, res) => {
 
 // 新增支出
 router.post('/', (req, res) => {
+  const userId = req.user._id
   const { name, date, categoryId, cost } = req.body
 
   if (!name || !date || !categoryId || !cost) {
@@ -22,7 +23,7 @@ router.post('/', (req, res) => {
       .then(category => res.render('new', { name, date, cost }))
   }
 
-  return Expense.create({ name, date, cost, categoryId })
+  return Expense.create({ name, date, cost, categoryId, userId })
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
@@ -30,12 +31,13 @@ router.post('/', (req, res) => {
 
 // 修改支出頁面
 router.get('/:id/edit', (req, res) => {
-  const id = req.params.id
+  const userId = req.user._id
+  const _id = req.params.id
 
   return Category.find()
     .lean()
     .then(categories => {
-      return Expense.findById(id)
+      return Expense.findOne({ _id, userId })
         .populate('categoryId')
         .lean()
         .then(item => res.render('edit', { item, categories }))
@@ -47,10 +49,11 @@ router.get('/:id/edit', (req, res) => {
 
 // 修改支出
 router.put('/:id', (req, res) => {
-  const id = req.params.id
+  const userId = req.user._id
+  const _id = req.params.id
   const { name, date, categoryId, cost } = req.body
 
-  return Expense.findOneAndUpdate({ _id: id }, { name, date, categoryId, cost })
+  return Expense.findOneAndUpdate({ _id, userId }, { name, date, categoryId, cost })
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
@@ -58,10 +61,11 @@ router.put('/:id', (req, res) => {
 
 // 刪除支出
 router.delete('/:id', (req, res) => {
+  const userId = req.user._id
   const id = req.params.id
 
-  return Expense.findById(id)
-    .then(item => item.deleteOne({ id })) // 舊版是 item.remove()
+  return Expense.findOne({ userId, id })
+    .then(item => item.deleteOne({ user, id })) // 舊版是 item.remove()
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })

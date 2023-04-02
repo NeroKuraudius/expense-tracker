@@ -5,11 +5,12 @@ const Category = require('../../models/Category')
 
 // 首頁
 router.get('/', (req, res) => {
+  const userId = req.user._id
 
   return Category.find()
     .lean()
     .then((categories) => {
-      return Expense.find()
+      return Expense.find({ userId })
         .populate('categoryId') // 以'categoryId'欄位把Expense跟Category資料庫關聯
         .lean()
         .sort({ date: 'desc' })
@@ -27,15 +28,17 @@ router.get('/', (req, res) => {
 
 // 顯示資料排序
 router.post('/', (req, res) => {
+  const userId = req.user._id
   const { categoryId } = req.body
 
   if (categoryId === 'all') {
     return res.redirect('/')
   }
+
   return Category.find()
     .lean()
     .then(categories => {
-      return Expense.find({ categoryId })
+      return Expense.find({ userId, categoryId })
         .populate('categoryId') // 以'categoryId'欄位把Expense跟Category資料庫關聯
         .lean()
         .sort({ date: 'desc' })
