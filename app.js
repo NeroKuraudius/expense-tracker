@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars')
 const router = require('./routers')
 const methodOverride = require('method-override')
 const session = require('express-session')
+const usePassport = require('./config/passport')
 require('./config/mongoose')
 
 const app = express()
@@ -16,10 +17,11 @@ app.set('view engine', 'hbs')
 app.use(methodOverride('_method'))
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  resave:false,
-  saveUninitialized:true
+  resave: false,
+  saveUninitialized: true
 }))
 
+usePassport(app)
 app.use(router)
 
 app.listen(port, () => {
