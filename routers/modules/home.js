@@ -13,7 +13,13 @@ router.get('/', (req, res) => {
         .populate('categoryId') // 以'categoryId'欄位把Expense跟Category資料庫關聯
         .lean()
         .sort({ date: 'desc' })
-        .then(items => res.render('index', { items, categories }))
+        .then((items) => {
+          let totalAmount = 0
+          items.forEach(item => {
+            totalAmount += item.cost
+          })
+          return res.render('index', { items, categories, totalAmount })
+        })
         .catch(err => console.log(err))
     })
     .catch(err => console.log(err))
@@ -23,25 +29,26 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   const { categoryId } = req.body
 
-  Category.find()
+  if (categoryId === 'all') {
+    return res.redirect('/')
+  }
+  return Category.find()
     .lean()
-    .then((categories) => {
-      if (categoryId === 'all') {
-        return Expense.find()
-          .populate('categoryId') // 以'categoryId'欄位把Expense跟Category資料庫關聯
-          .lean()
-          .sort({ date: 'desc' })
-          .then(items => res.render('index', { items, categories }))
-          .catch(err => console.log(err))
-      } else {
-        return Expense.find({ categoryId })
-          .populate('categoryId') // 以'categoryId'欄位把Expense跟Category資料庫關聯
-          .lean()
-          .sort({ date: 'desc' })
-          .then(items => res.render('index', { items, categories }))
-          .catch(err => console.log(err))
-      }
-    })
+    .then(categories => {
+      return Expense.find({ categoryId })
+        .populate('categoryId') // 以'categoryId'欄位把Expense跟Category資料庫關聯
+        .lean()
+        .sort({ date: 'desc' })
+        .then(items => {
+          let totalAmount = 0
+          items.forEach(item => {
+            totalAmount += item.cost
+          })
+          return res.render('index', { items, categories, totalAmount })
+        })
+        .catch(err => console.log(err))
+    }
+    )
     .catch(err => console.log(err))
 })
 
