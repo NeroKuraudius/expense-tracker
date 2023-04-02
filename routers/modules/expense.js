@@ -62,10 +62,10 @@ router.put('/:id', (req, res) => {
 // 刪除支出
 router.delete('/:id', (req, res) => {
   const userId = req.user._id
-  const id = req.params.id
+  const _id = req.params.id
 
-  return Expense.findOne({ userId, id })
-    .then(item => item.deleteOne({ user, id })) // 舊版是 item.remove()
+  return Expense.findOne({ userId, _id })
+    .then(item => item.deleteOne({ _id })) // 舊版是 item.remove()
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })

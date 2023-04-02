@@ -11,9 +11,10 @@ router.get('/login', (req, res) => {
 })
 
 // 登入驗證
-router.post('/', passport.authenticate('local', {
+router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/users/login'
+  failureRedirect: '/users/login',
+  failureFlash: true
 }))
 
 // 註冊頁面
@@ -38,7 +39,7 @@ router.post('/register', (req, res) => {
     })
   }
 
-  User.findOne(email)
+  User.findOne({ email })
     .lean()
     .then(user => {
       if (user) {
