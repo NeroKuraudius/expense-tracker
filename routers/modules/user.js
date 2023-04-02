@@ -16,7 +16,6 @@ router.post('/', passport.authenticate('local', {
 
 // 註冊頁面
 router.get('/register', (req, res) => {
-
   res.render('register')
 })
 
@@ -27,6 +26,15 @@ router.post('/register', (req, res) => {
   if (!name || !email || !password || !confirmPassword) {
 
   }
+})
+
+// 登出
+router.get('/logout', (req, res, next) => {
+  req.logOut((err) => {
+    if (err) { return next(err) }
+    flash('successMsg', 'Succeed in logout.')
+    res.redirect('/users/login')
+  })
 })
 
 

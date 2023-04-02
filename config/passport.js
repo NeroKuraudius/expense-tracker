@@ -6,16 +6,16 @@ const LocalStrategy = require('passport-local').Strategy
 module.exports = app => {
   // passport初始化
   app.use(passport.initialize())
-  app.use(passport.sessiong())
+  app.use(passport.session())
 
   // 設定本地登入策略
   passport.use(new LocalStrategy({ usernameField: 'email' },
-    (email, password, done) => {
+    (req, email, password, done) => {
       User.findOne({ email })
         .then(user => {
-          if (!user) { return done(null, false, flash({ 'warningMsg': 'The email has not registered yet.' })) }
+          if (!user) { return done(null, false, req.flash('warningMsg', 'The email has not registered yet.')) }
           if (user.password !== password) {
-            return done(null, false, flash({ 'warningMsg': 'Email or password incorrect.' }))
+            return done(null, false, req.flash('warningMsg', 'Email or password incorrect.'))
           }
           return done(null, user)
         })
