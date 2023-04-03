@@ -28,10 +28,10 @@ router.post('/register', (req, res) => {
   const errs = []
 
   if (!name || !email || !password || !confirmPassword) {
-    errs.push({ warningMsg: 'All of the blanks are required.' })
+    errs.push({ errMsg: '所有欄位皆為必填' })
   }
   if (password !== confirmPassword) {
-    errs.push({ warningMsg: 'The password are different.' })
+    errs.push({ errMsg: '所輸入的密碼不一致' })
   }
   if (errs.length) {
     return res.render('register', {
@@ -43,9 +43,9 @@ router.post('/register', (req, res) => {
     .lean()
     .then(user => {
       if (user) {
-        errs.push({ warningMsg: 'This email had been registered.' })
+        errs.push({ errMsg: '該帳號已註冊' })
         res.render('register', {
-          errors, name, email, password, confirmPassword
+          errs, name, email, password, confirmPassword
         })
       }
       return bcrypt.genSalt(10)
@@ -54,7 +54,7 @@ router.post('/register', (req, res) => {
           name, email, password: hash
         }))
         .then(() => {
-          req.flash('successMsg', 'Please use the new account to login.')
+          req.flash('successMsg', '請用新帳號重新登入')
           res.redirect('/users/login')
         })
         .catch(err => console.log(error))
@@ -66,7 +66,7 @@ router.post('/register', (req, res) => {
 router.get('/logout', (req, res, next) => {
   req.logOut((err) => {
     if (err) { return next(err) }
-    req.flash('successMsg', 'Succeed in logout.')
+    req.flash('successMsg', '您已成功登出')
     res.redirect('/users/login')
   })
 })

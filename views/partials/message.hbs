@@ -1,0 +1,25 @@
+{{#if successMsg}}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  {{{successMsg}}}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+  </button>
+</div>
+{{/if}}
+
+{{#if warningMsg}}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  {{{warningMsg}}}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+  </button>
+</div>
+{{/if}}
+
+{{#if errs}}
+{{#each errs}}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  {{ this.errMsg }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+  </button>
+</div>
+{{/each}}
+{{/if}}
