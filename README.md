@@ -23,16 +23,16 @@
 
 
 ## 套件版本
-Node.js 18.12.1
-Express 4.18.2
-MongoDB
-Mongoose 7.0.3
-Express-handlebars 7.0.4
-Express-session 1.17.3
-Method-override 3.0.0
-Connect-flash 0.1.1
-Bcryptjs 2.4.3
-Passport 0.6.0
-Passport-local 1.0.0
-Passport-facebook 3.0.0
-Font-awesome 4.7.0
+#### Node.js 18.12.1
+#### Express 4.18.2
+#### MongoDB
+#### Mongoose 7.0.3
+#### Express-handlebars 7.0.4
+#### Express-session 1.17.3
+#### Method-override 3.0.0
+#### Connect-flash 0.1.1
+#### Bcryptjs 2.4.3
+#### Passport 0.6.0
+#### Passport-local 1.0.0
+#### Passport-facebook 3.0.0
+#### Font-awesome 4.7.0
