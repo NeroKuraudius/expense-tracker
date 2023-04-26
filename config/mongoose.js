@@ -11,6 +11,6 @@ const db = mongoose.connection
 db.once('open', () => {
   console.log('MongoDB connected!')
 })
-db.on('error', () => {
+db.on('error', (err) => {
   console.log(err)
 })
