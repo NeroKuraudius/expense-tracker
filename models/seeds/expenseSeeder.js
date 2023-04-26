@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs')
 const User = require('../User')
-const Expense = require('../Expense')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
