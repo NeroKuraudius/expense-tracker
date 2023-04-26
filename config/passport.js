@@ -1,5 +1,4 @@
 const User = require('../models/User')
-const flash = require('connect-flash')
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const LocalStrategy = require('passport-local').Strategy
