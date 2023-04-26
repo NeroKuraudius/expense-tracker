@@ -56,7 +56,7 @@ router.post('/register', (req, res) => {
           req.flash('successMsg', '請用新帳號重新登入')
           res.redirect('/users/login')
         })
-        .catch(err => console.log(error))
+        .catch(err => console.log(err))
     })
     .catch(err => console.log(err))
 })
