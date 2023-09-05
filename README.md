@@ -21,6 +21,9 @@
 4. 輸入`npm run start`以啟動專頁
 5. 若看到`Succeed in running.`表示啟動成功
 
+## [DEMO](https://expense-tracker-online.onrender.com)
+### ※請以預設帳號登入：帳號test@gmail.com   密碼zzz123
+
 
 ## 套件版本
 #### Node.js 18.12.1
