@@ -1,7 +1,7 @@
 # 家庭記帳簿
 
-![image](https://github.com/NeroKuraudius/expense-tracker/blob/main/image/login_page.jpg)
-![image](https://github.com/NeroKuraudius/expense-tracker/blob/main/image/index_page.jpg)
+![image](https://github.com/NeroKuraudius/expense-tracker/blob/main/images/login_page.jpg)
+![image](https://github.com/NeroKuraudius/expense-tracker/blob/main/images/index_page.jpg)
 
 
 ## 功能介紹
