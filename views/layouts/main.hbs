@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+  <title>線上記帳本</title>
+
   <nav class="navbar bg-dark" style="display: flex;">
     <div class="container-fluid" style="justify-content:space-between">
       <a class="navbar-brand" href="/" style="color: yellow;">
@@ -9,7 +11,7 @@
         {{#if isAuthenticated}}
         {{user.name}}的記帳本
         {{else}}
-        家庭記帳本
+        線上記帳本
         {{/if}}
       </a>
       {{#if isAuthenticated}}
