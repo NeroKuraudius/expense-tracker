@@ -7,7 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const SEED_USER = {
   name: 'TEST',
-  email: 'test@gmail.com',
+  email: 'test@viewlead.com',
   password: 'zzz123',
 }
 
@@ -28,11 +28,11 @@ db.once('open', () => {
         password: hash
       })
         .then(() => {
-          console.log('expenseSeeder running finished!')
+          console.log('userSeeder running finished!')
           db.close()
           process.exit()
         }
         )
     })
-    .catch(err => console.log('expense run failed.'))
+    .catch(err => console.log('userSeeder run failed.'))
 })

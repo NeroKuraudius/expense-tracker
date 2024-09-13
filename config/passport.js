@@ -3,7 +3,6 @@ const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const LocalStrategy = require('passport-local').Strategy
 const FBStrategy = require('passport-facebook').Strategy
-const nodemailer = require('nodemailer')
 
 module.exports = app => {
   // passport初始化
@@ -37,33 +36,6 @@ module.exports = app => {
   }, (accessToken, refreshToken, profile, done) => {
     const { name, email } = profile._json //發回的資料會在profile_json內
 
-    const transpoter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.mailSender,
-        pass: process.env.mailPassword
-      }
-    })
-
-    const mailOptions = {
-      from: process.env.mailSender,
-      to: process.env.mailReciever,
-      subject: 'test email',
-      text: 'test from nodemailer:login success'
-    }
-
-    transpoter.verify()
-
-    transpoter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log('Error on sending mail\n', err)
-      } else {
-        console.log('The email was sent.\n', info)
-      }
-    })
-
-
-
     User.findOne({ email })
       .then(user => {
         if (user) { return done(null, user) }
@@ -74,13 +46,6 @@ module.exports = app => {
             name, email, password: hash
           }))
           .then(user => {
-            transpoter.sendMail(mailOptions, (err, info) => {
-              if (err) {
-                console.log('Error on sending mail', err)
-              } else {
-                console.log(info)
-              }
-            })
             return done(null, user)
           })
           .catch(err => done(err, false))

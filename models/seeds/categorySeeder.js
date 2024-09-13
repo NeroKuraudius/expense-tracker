@@ -26,5 +26,5 @@ db.once('open', () => {
       process.exit()
     }
     )
-    .catch(err => console.log('category run failed.'))
+    .catch(err => console.log('categorySeeder run failed.'))
 })
