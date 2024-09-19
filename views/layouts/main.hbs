@@ -15,8 +15,16 @@
         {{/if}}
       </a>
       {{#if isAuthenticated}}
-      <a href="/users/logout" class="fa-solid fa-right-from-bracket pe-5" type="submit"
-        style="font-size:150%;float:right;color: #c8d2e5;text-decoration:none"></a>{{/if}}
+      <span>
+        {{!-- 登出鈕 --}}
+        <a href="/users/logout" class="fa-solid fa-right-from-bracket pe-5" type="submit"
+        style="font-size:150%;float:right;color: aliceblue;text-decoration:none;"></a>
+
+        {{!-- 設定鈕 --}}
+        <a href="/users/setting" class="fa-solid fa-gear pe-5" type="submit"
+          style="font-size:150%;float:right;color:aliceblue;text-decoration:none;"></a>
+      </span>
+      {{/if}}
     </div>
   </nav>
 

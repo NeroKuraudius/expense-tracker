@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 
 // 登入頁面
 router.get('/login', (req, res) => {
-  res.render('login')
+  return res.render('login')
 })
 
 // 登入驗證
@@ -18,7 +18,7 @@ router.post('/login', passport.authenticate('local', {
 
 // 註冊頁面
 router.get('/register', (req, res) => {
-  res.render('register')
+  return res.render('register')
 })
 
 // 註冊
@@ -43,7 +43,7 @@ router.post('/register', (req, res) => {
     .then(user => {
       if (user) {
         errs.push({ errMsg: '該帳號已註冊' })
-        res.render('register', {
+        return res.render('register', {
           errs, name, email, password, confirmPassword
         })
       }
@@ -54,7 +54,7 @@ router.post('/register', (req, res) => {
         }))
         .then(() => {
           req.flash('successMsg', '請用新帳號重新登入')
-          res.redirect('/users/login')
+          return res.redirect('/users/login')
         })
         .catch(err => console.log(err))
     })
@@ -66,8 +66,22 @@ router.get('/logout', (req, res, next) => {
   req.logout((err) => {
     if (err) { return next(err) }
     req.flash('successMsg', '您已成功登出')
-    res.redirect('/users/login')
+    return res.redirect('/users/login')
   })
+})
+
+// 設定修改頁面
+router.get('/setting', (req, res, next) => {
+  return res.render('setting', { user : req.user })
+})
+
+// 修改設定
+router.post('/setting', (req, res, next) => {
+  
+
+
+  req.flash('successMsg', '資料修改成功')
+  return res.redirect('/users/setting')
 })
 
 

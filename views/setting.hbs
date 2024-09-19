@@ -1,0 +1,37 @@
+<div class="form-container m-3" style="display:flex;justify-content:center;">
+    <form action="/users/setting" method="POST" style="item-align:center">
+        <div class="container">
+
+            <div class="mt-5" style="display:flex;justify-content:space-around">
+                <div style="display:flex;justify-content:center">
+                    <h4>使用者資料</h4>
+                </div>
+            </div>
+
+            <div class="mt-3 mb-3">
+                <label for="name" class="me-4">姓名：</label>
+                <input type="text" id="name" name="name"
+                    style="height:40px;width:220px;border:1px solid black;border-radius:5px;vertical-align:center" {{#if
+                    user.name}}value="{{user.name}}" {{/if}} required>
+            </div>
+
+            <div class="mt-5 mb-3">
+                <label for="email" class="me-4">帳號：</label>
+                <input type="email" id="email" name="email"
+                    style="height:40px;width:220px;border:1px solid black;border-radius:5px;vertical-align:center" {{#if
+                    user.email}}value="{{user.email}}" {{/if}} required>
+            </div>
+
+            <div class="mt-5 mb-3">
+                <label for="cost" class="me-4">預算：</label>
+                <input type="number" id="budget" name="budget"
+                    style="height:40px;width:220px;border:1px solid black;border-radius:5px;vertical-align:center" {{#if
+                    user.budget}}value="{{user.budget}}" {{/if}}>
+            </div>
+
+            <div class="mb-3" style="display:flex;justify-content:center">
+                <button class="btn btn-outline-primary mt-3" type="submit">確定修改</button>
+            </div>
+        </div>
+    </form>
+</div>

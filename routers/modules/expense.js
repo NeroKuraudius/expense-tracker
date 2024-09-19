@@ -7,7 +7,7 @@ const Category = require('../../models/Category')
 router.get('/new', (req, res) => {
   return Category.find()
     .lean()
-    .then(categories => res.render('new', { categories }))
+    .then(categories => { return res.render('new', { categories } ) })
     .catch(err => console.log(err))
 })
 
@@ -20,11 +20,11 @@ router.post('/', (req, res) => {
   if (!name || !date || !categoryId || !cost) {
     return Category.findById(categoryId)
       .lean()
-      .then(category => res.render('new', { name, date, cost }))
+      .then(category => { return res.render('new', { name, date, cost }) })
   }
 
   return Expense.create({ name, date, cost, categoryId, userId })
-    .then(() => res.redirect('/'))
+    .then(() => { return  res.redirect('/') })
     .catch(err => console.log(err))
 })
 
@@ -40,7 +40,7 @@ router.get('/:id/edit', (req, res) => {
       return Expense.findOne({ _id, userId })
         .populate('categoryId')
         .lean()
-        .then(item => res.render('edit', { item, categories }))
+        .then(item => { return res.render('edit', { item, categories }) })
         .catch(err => console.log(err))
     })
     .catch(err => console.log(err))
@@ -54,7 +54,7 @@ router.put('/:id', (req, res) => {
   const { name, date, categoryId, cost } = req.body
 
   return Expense.findOneAndUpdate({ _id, userId }, { name, date, categoryId, cost })
-    .then(() => res.redirect('/'))
+    .then(() => { return res.redirect('/') })
     .catch(err => console.log(err))
 })
 
@@ -66,7 +66,7 @@ router.delete('/:id', (req, res) => {
 
   return Expense.findOne({ userId, _id })
     .then(item => item.deleteOne({ _id })) // 舊版是 item.remove()
-    .then(() => res.redirect('/'))
+    .then(() => { return res.redirect('/') })
     .catch(error => console.log(error))
 })
 

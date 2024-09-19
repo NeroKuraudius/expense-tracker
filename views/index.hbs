@@ -1,7 +1,7 @@
 {{!-- 選單 --}}
 <div class="mt-5 form-container">
   <form class="d-flex flex-row" action="/" method="POST">
-    <div class=" category-group input-group" style="width:400px;margin:0 auto">
+    <div class=" category-group input-group" style="width:400px;margin:0 auto;">
       <select class="form-select col" id="categoryId" name="categoryId" onchange="this.form.submit()">
         <option selected disabled hidden>類別</option>
         <option value="all">全部</option>
@@ -14,7 +14,7 @@
 </div>
 {{!-- 總金額 --}}
 <div class="container mt-3" style="text-align:center">
-  <h4 style="font-weight:bold">總金額</h4>
+  <h4 style="font-weight:bold">支出總金額</h4>
   <h1 name="totalAmount" style="font-weight:bold;color:darkgoldenrod">{{totalAmount}}</h1>
 </div>
 
@@ -36,7 +36,7 @@
     <tbody>
       {{#each items}}
       <tr style="vertical-align: middle">
-        <th scope="row"><i class="{{this.categoryId.icon}}"></i>{{this.categoryId.name}}</th>
+        <th scope="row"><i class="{{this.categoryId.icon}}"></i> {{this.categoryId.name}}</th>
         <td>{{this.name}}</td>
         <td>{{this.date}}</td>
         <td>{{this.cost}}</td>
