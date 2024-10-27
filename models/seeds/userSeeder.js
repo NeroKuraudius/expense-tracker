@@ -34,5 +34,9 @@ db.once('open', () => {
         }
         )
     })
-    .catch(err => console.log('userSeeder run failed.'))
+    .catch(err => {
+      console.log('userSeeder run failed.')
+      db.close()
+      process.exit()
+    })
 })

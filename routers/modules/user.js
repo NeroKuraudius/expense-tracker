@@ -77,11 +77,36 @@ router.get('/setting', (req, res, next) => {
 
 // 修改設定
 router.post('/setting', (req, res, next) => {
-  
+  let { name, budget, password } = req.body
 
+  if (name.trim().length === 0) {
+    req.flash('warningMsg', '姓名不可為空')
+    return res.redirect('/users/setting')
+  }
 
-  req.flash('successMsg', '資料修改成功')
-  return res.redirect('/users/setting')
+  if (!budget || budget === 0){
+    budget = null
+  }
+
+  const email = req.user.email
+  User.findOne({ email })
+  .lean()
+  .then(user=>{
+    return bcrypt.compare(password, user.password)
+        .then(async(isMatch)=>{
+          if (isMatch){
+            await User.updateOne({ email }, {$set: { name, budget } })
+          }else{
+            req.flash('warningMsg', '密碼輸入錯誤')
+            return res.redirect('/users/setting')
+          }
+        })
+        .then(() => {
+          req.flash('successMsg', '資料修改成功')
+          return res.redirect('/users/setting')
+        })
+        .catch(err => console.log(err))
+  })
 })
 
 

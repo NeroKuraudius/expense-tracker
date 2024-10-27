@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars')
 const router = require('./routers')
 const methodOverride = require('method-override')
 const session = require('express-session')
+const hbsHelpers = require('./helpers/handlebars-helpers')
 const usePassport = require('./config/passport')
 const flash = require('connect-flash')
 require('./config/mongoose')
@@ -14,7 +15,7 @@ const port = process.env.PORT
 app.use(express.urlencoded({ extended: true }))
 
 // 設定樣板
-app.engine('hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main' }))
+app.engine('hbs', exphbs.engine({ helpers:hbsHelpers, extname: '.hbs', defaultLayout: 'main' }))
 app.set('view engine', 'hbs')
 
 // 設定路由驅動器

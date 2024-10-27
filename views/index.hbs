@@ -1,21 +1,52 @@
 {{!-- 選單 --}}
 <div class="mt-5 form-container">
-  <form class="d-flex flex-row" action="/" method="POST">
-    <div class=" category-group input-group" style="width:400px;margin:0 auto;">
+  {{!-- <div style="display:flex;justify-content:center;align-items:center">
+    <form action="/" method="POST">
+      <h2 style="text-align:center;font-weight:bold;">
+        帳目區間
+        <input type="month" id="dateInput" name="selectTime" onchange="this.form.submit()" value="{{#if selectTime}}{{selectTime}}{{/if}}" style="border:none;outline:none;background:transparent;font-weight:bold">
+      </h2>
+    </form>
+  </div> --}}
+
+  <form action="/" method="POST">
+    <div class="mb-5">
+        <h2 style="text-align:center;font-weight:bold;">
+          帳目區間
+          <input type="month" id="dateInput" name="selectTime" onchange="this.form.submit()"
+            value="{{#if selectTime}}{{selectTime}}{{/if}}"
+            style="border:none;outline:none;background:transparent;font-weight:bold">
+        </h2>
+    </div>
+
+    <div class="category-group input-group" style="width:400px;margin:0 auto;">
       <select class="form-select col" id="categoryId" name="categoryId" onchange="this.form.submit()">
-        <option selected disabled hidden>類別</option>
-        <option value="all">全部</option>
+        <option value="DEFAULT" hidden disable>支出選項</option>
+        <option value="ALL" {{#ifCond categoryId 'ALL'}}selected{{/ifCond}}>全部</option>
         {{#each categories}}
-        <option value="{{this._id}}">{{this.name}}</option>
+        <option value="{{this._id}}" {{#ifCond ../categoryId this._id}}selected{{/ifCond}}>{{this.name}}</option>
         {{/each}}
       </select>
     </div>
   </form>
 </div>
+<script>
+    document.querySelector('.date-picker').addEventListener('click', function () {
+      document.getElementById('dateInput').click();
+    });
+</script>
 {{!-- 總金額 --}}
-<div class="container mt-3" style="text-align:center">
-  <h4 style="font-weight:bold">支出總金額</h4>
-  <h1 name="totalAmount" style="font-weight:bold;color:darkgoldenrod">{{totalAmount}}</h1>
+<div class="container mt-3" style="display:inline">
+  {{#if dayCost}}
+  <div class="me-3" style="text-align:end">
+    <h6 style="color:grey">可支配金額: {{dayCost}} 元/日</h6>
+  </div>
+  {{/if}}
+
+  <div style="text-align:center">
+    <h4 style="font-weight:bold">支出總金額</h4>
+    <h1 name="totalAmount" style="font-weight:bold;color:darkgoldenrod">{{totalAmount}}</h1>
+  </div>
 </div>
 
 {{!-- 支出明細 --}}
