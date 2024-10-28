@@ -72,12 +72,11 @@ router.post('/', (req, res) => {
             const dayCost = Math.round((budget-totalAmount) / leftDays)
             return res.render('index', { items, categories, categoryId, totalAmount, thisYear, thisMonth, selectTime, dayCost })
           }
-          
+
           return res.render('index', { items, categories, categoryId, totalAmount, thisYear, thisMonth, selectTime })
         })
         .catch(err => console.log(err))
-    }
-    )
+    })
     .catch(err => console.log(err))
 })
 
