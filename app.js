@@ -15,7 +15,7 @@ const port = process.env.PORT
 app.use(express.urlencoded({ extended: true }))
 
 // 設定樣板
-app.engine('hbs', exphbs.engine({ helpers:hbsHelpers, extname: '.hbs', defaultLayout: 'main' }))
+app.engine('hbs', exphbs.engine({ helpers: hbsHelpers, extname: '.hbs', defaultLayout: 'main' }))
 app.set('view engine', 'hbs')
 
 // 設定路由驅動器
@@ -26,7 +26,6 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
-  // ,cookie:{secure:false}
 }))
 
 // 設定驗證流程
