@@ -18,25 +18,28 @@ const db = mongoose.connection
 db.on('error', () => {
   console.log('MongoDB error!')
 })
-db.once('open', () => {
-  return bcrypt.genSalt(10)
-    .then(salt => bcrypt.hash(SEED_USER.password, salt))
-    .then(hash => {
-      User.create({
+db.once('open', async () => {
+  try{
+    const testUserCheck = await User.findOne({name:'TEST'})
+    if (testUserCheck) {
+      console.log('No running userSeeder')
+      db.close()
+      process.exit()
+    }else{
+      const salt = bcrypt.genSalt(10)
+      const hash = bcrypt.hash(SEED_USER.password, salt)
+      const testUser = User.create({
         name: SEED_USER.name,
         email: SEED_USER.email,
         password: hash
       })
-        .then(() => {
-          console.log('userSeeder running finished!')
-          db.close()
-          process.exit()
-        }
-        )
-    })
-    .catch(err => {
-      console.log('userSeeder run failed.')
+      console.log('userSeeder running finished!')
       db.close()
       process.exit()
-    })
+    }
+  }catch(err){
+    console.log('userSeeder run failed.')
+    db.close()
+    process.exit()
+  }   
 })

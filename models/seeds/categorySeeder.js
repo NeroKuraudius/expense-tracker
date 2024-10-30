@@ -18,16 +18,23 @@ const db = mongoose.connection
 db.on('error', () => {
   console.log('MongoDB error!')
 })
-db.once('open', () => {
-  Category.create(categoryList)
-  .then(()=> {
-    console.log('categorySeeder running finished!')
-    db.close()
-    process.exit()
-  })
-    .catch((err) => {
-      console.log('categorySeeder run failed.')
+db.once('open', async() => {
+  try{
+    const dataCheck1 = await Category.findOne({name:'其他'})
+    const dataCheck2 = await Category.findOne({name:'交通出行'})
+    if (dataCheck1 && dataCheck2) {
+      console.log('No running categorySeeder')
       db.close()
       process.exit()
-  })
+    }else{
+      const newData = await Category.create(categoryList)
+      console.log('categorySeeder running finished!')
+      db.close()
+      process.exit()
+    }
+  }catch(err){
+    console.log('categorySeeder run failed.')
+    db.close()
+    process.exit()
+  }   
 })
