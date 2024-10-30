@@ -1,10 +1,10 @@
 const Category = require('../Category')
 const categoryList = [
-  { id: 1 ,name: '其他', icon: 'fa-solid fa-pen' },
+  { id: 1 ,name: '餐飲食品', icon: 'fa-solid fa-utensils' },
   { id: 2 ,name: '休閒娛樂', icon: 'fa-solid fa-face-grin-beam' },
   { id: 3 ,name: '家居物業', icon: 'fa-solid fa-house' },
-  { id: 4 ,name: '餐飲食品', icon: 'fa-solid fa-utensils' },
-  { id: 5 ,name: '交通出行', icon: 'fa-solid fa-van-shuttle' }
+  { id: 4 ,name: '交通出行', icon: 'fa-solid fa-van-shuttle' },
+  { id: 5 ,name: '其他', icon: 'fa-solid fa-pen' }
 ]
 
 if (process.env.NODE_ENV !== 'production') {
