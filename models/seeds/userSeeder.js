@@ -26,8 +26,8 @@ db.once('open', async () => {
       db.close()
       process.exit()
     }else{
-      const salt = bcrypt.genSalt(10)
-      const hash = bcrypt.hash(SEED_USER.password, salt)
+      const salt = await bcrypt.genSalt(10)
+      const hash = await bcrypt.hash(SEED_USER.password, salt)
       const testUser = await User.create({
         name: SEED_USER.name,
         email: SEED_USER.email,
