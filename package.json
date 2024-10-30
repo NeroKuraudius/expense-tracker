@@ -7,7 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "seed": "node models/seeds/categorySeeder.js && node models/seeds/userSeeder.js"
+    "seed": "node models/seeds/categorySeeder.js && node models/seeds/userSeeder.js",
+    "engines": {
+      "node": ">=18.12.1 <=20.0.0"
+    }
   },
   "keywords": [],
   "author": "",
