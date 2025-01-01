@@ -14,28 +14,5 @@ router.get('/facebook/callback', passport.authenticate('facebook', {
   failureRedirect: '/users/login'
 }))
 
-// // 建立google mail URL
-// router.get('/google', (req, res) => {
-//   const authUrl = googleOAuth2Client.generateAuthUrl({
-//     access_type: 'offline',
-//     scope: ['https://mail.google.com/']
-//   })
-
-//   return res.redirect(authUrl)
-// })
-
-// // 用取得的url進行callback
-// router.get('/google/callback', async (req, res) => {
-//   const { code } = req.query
-//   try {
-//     const { tokens } = await googleOAuth2Client.getToken(code)
-//     req.session.tokens = tokens
-
-//     return res.redirect('/email/user')
-//   } catch (err) {
-//     console.log('Error authenticating with Google:', err)
-//     return res.status(500).send('Error authenticating with Google.')
-//   }
-// })
 
 module.exports = router

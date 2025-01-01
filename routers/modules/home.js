@@ -8,10 +8,13 @@ router.get('/', (req, res) => {
   // 首頁登入後初始化:
   const budget = req.user.budget
   const userId = req.user._id
+  
   const theDay = new Date()
   const thisYear = theDay.getFullYear()
   const thisMonth = theDay.getMonth() + 1  // 月份為0~11
-  const selectTime = `${thisYear}-${thisMonth}`
+
+  let selectTime = `${thisYear}-${thisMonth}`
+  if (selectTime.length < 7) selectTime = selectTime.replace('-', '-0')
 
   return Category.find()
     .lean()
