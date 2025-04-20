@@ -21,6 +21,7 @@ router.post('/', (req, res) => {
     return Category.findById(categoryId)
       .lean()
       .then(category => { return res.render('new', { name, date, cost }) })
+      .catch(err => console.log(err))
   }
 
   return Expense.create({ name, date, cost, categoryId, userId })
