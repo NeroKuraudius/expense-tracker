@@ -48,6 +48,23 @@ const expenseService = {
             .then(() => { return cb(null, {}) })
             .catch(error => cb(err.message))
     },
+
+    // 新增支出
+    postExpense: (req,cb)=>{
+        const userId = req.user._id
+        const { name, date, categoryId, cost } = req.body
+
+        if ( !name.trim()|| !date || !categoryId || !cost) {
+            return Category.findById(categoryId)
+                .lean()
+                .then(category => { return cb(null, { name, date, cost }) })
+                .catch(err => cb(err.message))
+        }
+
+        return Expense.create({ name, date, cost, categoryId, userId })
+            .then(() => { return  cb(null, {}) })
+            .catch(err => cb(err.message))
+            }
 }
 
 

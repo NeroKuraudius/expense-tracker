@@ -17,23 +17,7 @@ router.put('/:id', expenseController.putExpense)
 router.delete('/:id', expenseController.deleteExpense)
 
 // 新增支出
-router.post('/', (req, res) => {
-  const userId = req.user._id
-  const { name, date, categoryId, cost } = req.body
-
-  if (!name || !date || !categoryId || !cost) {
-    return Category.findById(categoryId)
-      .lean()
-      .then(category => { return res.render('new', { name, date, cost }) })
-      .catch(err => console.log(err))
-  }
-
-  return Expense.create({ name, date, cost, categoryId, userId })
-    .then(() => { return  res.redirect('/') })
-    .catch(err => console.log(err))
-})
-
-
+router.post('/', expenseController.postExpense)
 
 
 
