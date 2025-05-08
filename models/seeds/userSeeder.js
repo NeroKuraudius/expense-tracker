@@ -7,7 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const SEED_USER = {
   name: 'TEST',
-  email: 'test@viewlead.com',
+  email: 'test@example.com',
   password: 'zzz123',
 }
 
