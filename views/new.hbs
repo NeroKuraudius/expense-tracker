@@ -31,7 +31,7 @@
           required>
           <option selected disabled hidden>請選擇</option>
           {{#each categories}}
-          <option value="{{this._id}}">{{this.name}}</option>
+          <option value="{{this._id}}" {{#ifCond ../categoryId this._id}}selected{{/ifCond}}>{{this.name}}</option>
           {{/each}}
         </select>
       </div>

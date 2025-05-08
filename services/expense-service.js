@@ -54,10 +54,15 @@ const expenseService = {
         const userId = req.user._id
         const { name, date, categoryId, cost } = req.body
 
-        if ( !name.trim()|| !date || !categoryId || !cost) {
-            return Category.findById(categoryId)
+        if (!name.trim()){
+            return Category.find()
                 .lean()
-                .then(category => { return cb(null, { name, date, cost }) })
+                .then(categories => { return cb(null, { name, date, cost, categoryId, categories }) })
+                .catch(err => cb(err.message))
+        }else if (!date || !categoryId || !cost) {
+            return Category.find()
+                .lean()
+                .then(categories => { return cb(null, { name, date, cost, categoryId, categories }) })
                 .catch(err => cb(err.message))
         }
 
