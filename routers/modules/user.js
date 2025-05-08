@@ -21,7 +21,7 @@ router.get('/logout', authenticator, userController.getLogout)
 router.post('/register', userController.postRegister)
 
 // 修改設定
-router.post('/setting', userController.postSetting)
+router.post('/setting', authenticator, userController.postSetting)
 
 // 登入驗證
 router.post('/login', passport.authenticate('local', {
