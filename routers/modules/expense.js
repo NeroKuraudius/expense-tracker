@@ -3,6 +3,7 @@ const router = express.Router()
 
 const expenseController = require('../../controllers/expenseController')
 
+
 // 新增頁面
 router.get('/new', expenseController.getExpense)
 
@@ -17,8 +18,6 @@ router.delete('/:id', expenseController.deleteExpense)
 
 // 新增支出
 router.post('/', expenseController.postExpense)
-
-
 
 
 module.exports = router
