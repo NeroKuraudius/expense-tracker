@@ -26,7 +26,9 @@
 <div class="container mt-3" style="display:inline">
   {{#if dayCost}}
   <div class="me-3" style="text-align:end">
-    <h6 style="color:grey">可支配金額: {{dayCost}} 元/日</h6>
+    {{#ifCond categoryId 'ALL'}}
+      <h6 style="color:grey">可支配金額: {{dayCost}} 元/日</h6>
+    {{/ifCond}}
   </div>
   {{/if}}
 
