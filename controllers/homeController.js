@@ -7,7 +7,7 @@ const homeController = {
     },
     // 首頁排序
     postHome: (req,res,next)=>{
-
+        homeService.postHome(req, (err,data) => err ? next(err) : res.render('index', data))
     }
 }
 
