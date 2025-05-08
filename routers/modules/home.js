@@ -14,6 +14,7 @@ router.get('/', (req, res) => {
   const thisMonth = theDay.getMonth() + 1  // 月份為0~11
 
   let selectTime = `${thisYear}-${thisMonth}`
+  // 把月份變成雙位數: 3 → 03 / 9 → 09
   if (selectTime.length < 7) selectTime = selectTime.replace('-', '-0')
 
   return Category.find()
@@ -88,13 +89,14 @@ router.post('/', (req, res) => {
 function getDaysInCurrentMonth() {
     const now = new Date()
     const today = now.getDate()
-    const year = now.getFullYear()
     const month = now.getMonth()
+    const year = now.getFullYear()
 
     const firstDayNextMonth = new Date(year, month + 1, 1)
     const lastDayThisMonth = new Date(firstDayNextMonth - 1)
-    
-    return lastDayThisMonth.getDate() - today
+
+    // 回傳值: 本月總天數 - 當下日期 + 1 (含當天)
+    return lastDayThisMonth.getDate() - today + 1
 }
 
 module.exports = router
