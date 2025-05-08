@@ -4,6 +4,7 @@ const passport = require('passport')
 const User = require('../../models/User')
 const bcrypt = require('bcryptjs')
 
+const { authenticator } = require('../../middleware/auth')
 const userController = require('../../controllers/userController')
 
 // 登入頁面
@@ -13,10 +14,10 @@ router.get('/login', (req, res) => { return res.render('login') })
 router.get('/register', (req, res) => { return res.render('register') })
 
 // 設定修改頁面
-router.get('/setting', (req, res) => { return res.render('setting', { user : req.user }) })
+router.get('/setting', authenticator, (req, res) => { return res.render('setting', { user : req.user }) })
 
 // 登出
-router.get('/logout', userController.getLogout)
+router.get('/logout', authenticator, userController.getLogout)
 
 // 登入驗證
 router.post('/login', passport.authenticate('local', {
@@ -26,44 +27,7 @@ router.post('/login', passport.authenticate('local', {
 }))
 
 // 註冊
-router.post('/register', (req, res) => {
-  const { name, email, password, confirmPassword } = req.body
-  const errs = []
-
-  if (!name || !email || !password || !confirmPassword) {
-    errs.push({ errMsg: '所有欄位皆為必填' })
-  }
-  if (password !== confirmPassword) {
-    errs.push({ errMsg: '所輸入的密碼不一致' })
-  }
-  if (errs.length) {
-    return res.render('register', {
-      errs, name, email, password, confirmPassword
-    })
-  }
-
-  User.findOne({ email })
-    .lean()
-    .then(user => {
-      if (user) {
-        errs.push({ errMsg: '該帳號已註冊' })
-        return res.render('register', {
-          errs, name, email, password, confirmPassword
-        })
-      }
-      return bcrypt.genSalt(12)
-        .then(salt => bcrypt.hash(password, salt))
-        .then(hash => User.create({
-          name, email, password: hash
-        }))
-        .then(() => {
-          req.flash('successMsg', '請用新帳號重新登入')
-          return res.redirect('/users/login')
-        })
-        .catch(err => console.log(err))
-    })
-    .catch(err => console.log(err))
-})
+router.post('/register', userController.postRegister)
 
 
 // 修改設定

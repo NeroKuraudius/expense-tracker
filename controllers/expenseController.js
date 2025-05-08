@@ -21,7 +21,7 @@ const expenseController = {
     postExpense: (req,res,next)=>{
         expenseService.postExpense(req, (err, data) => {
             if (err) next(err)
-            (Object.keys(data).length === 0) && (data.constructor === Object) ? res.redirect('/') : res.render('new', data) 
+            Object.keys(data).length === 0 ? res.redirect('/') : res.render('new', data) 
         })
     }
 }
