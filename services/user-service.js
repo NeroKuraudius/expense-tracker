@@ -45,7 +45,43 @@ const userService = {
                 .catch(err => cb(err.message))
             })
             .catch(err => cb(err.message))
+    },
+
+    // 修改使用者資料
+    postSetting: (req,cb)=>{
+        let { name, budget, password } = req.body
+
+        if (name.trim().length === 0) {
+            req.flash('warningMsg', '姓名不可為空')
+            return cb(null, { })
+        }
+
+        if (!budget || budget === 0){
+            budget = null
+        }
+
+        const email = req.user.email
+        User.findOne({ email })
+        .lean()
+        .then(user=>{
+            return bcrypt.compare(password, user.password)
+                .then(async (isMatch)=>{
+                    if (isMatch){
+                        await User.updateOne({ email }, {$set: { name, budget } })
+                    }else{
+                        req.flash('warningMsg', '密碼輸入錯誤')
+                        return cb(null, { })
+                    }
+                })
+                .then(() => {
+                    req.flash('successMsg', '資料修改成功')
+                    return cb(null, { })
+                })
+                .catch(err => cb(err.message))
+        })
+        .catch(err => cb(err.message))
     }
 }
+
 
 module.exports = userService
