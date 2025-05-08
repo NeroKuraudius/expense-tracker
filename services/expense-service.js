@@ -22,6 +22,15 @@ const expenseService = {
             .catch(err => cb(err.message))
         })
         .catch(err => console.log(err))
+    },
+    putExpense: (req,cb)=>{
+        const userId = req.user._id
+        const _id = req.params.id
+        const { name, date, categoryId, cost } = req.body
+
+        return Expense.findOneAndUpdate({ _id, userId }, { name, date, categoryId, cost })
+        .then(() => {return cb(null, {}) })
+        .catch(err => cb(err.message))
     }
 }
 
