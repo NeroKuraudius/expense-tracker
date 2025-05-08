@@ -4,10 +4,19 @@ const passport = require('passport')
 const User = require('../../models/User')
 const bcrypt = require('bcryptjs')
 
+const userController = require('../../controllers/userController')
+
 // 登入頁面
-router.get('/login', (req, res) => {
-  return res.render('login')
-})
+router.get('/login', (req, res) => { return res.render('login') })
+
+// 註冊頁面
+router.get('/register', (req, res) => { return res.render('register') })
+
+// 設定修改頁面
+router.get('/setting', (req, res) => { return res.render('setting', { user : req.user }) })
+
+// 登出
+router.get('/logout', userController.getLogout)
 
 // 登入驗證
 router.post('/login', passport.authenticate('local', {
@@ -15,11 +24,6 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: '/users/login',
   failureFlash: true
 }))
-
-// 註冊頁面
-router.get('/register', (req, res) => {
-  return res.render('register')
-})
 
 // 註冊
 router.post('/register', (req, res) => {
@@ -61,19 +65,6 @@ router.post('/register', (req, res) => {
     .catch(err => console.log(err))
 })
 
-// 登出
-router.get('/logout', (req, res, next) => {
-  req.logout((err) => {
-    if (err) { return next(err) }
-    req.flash('successMsg', '您已成功登出')
-    return res.redirect('/users/login')
-  })
-})
-
-// 設定修改頁面
-router.get('/setting', (req, res, next) => {
-  return res.render('setting', { user : req.user })
-})
 
 // 修改設定
 router.post('/setting', (req, res, next) => {
