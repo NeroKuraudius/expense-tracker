@@ -5,12 +5,10 @@ const Category = require('../../models/Category')
 const expenseContoller = require('../../controllers/expenseController')
 
 // 新增頁面
-router.get('/new', (req, res) => {
-  return Category.find()
-    .lean()
-    .then(categories => { return res.render('new', { categories } ) })
-    .catch(err => console.log(err))
-})
+router.get('/new', expenseContoller.getExpense)
+
+// 修改支出頁面
+router.get('/edit/:id', expenseContoller.editExpense)
 
 
 // 新增支出
@@ -29,25 +27,6 @@ router.post('/', (req, res) => {
     .then(() => { return  res.redirect('/') })
     .catch(err => console.log(err))
 })
-
-
-// 修改支出頁面
-router.get('/:id/edit', (req, res) => {
-  const userId = req.user._id
-  const _id = req.params.id
-
-  return Category.find()
-    .lean()
-    .then(categories => {
-      return Expense.findOne({ _id, userId })
-        .populate('categoryId')
-        .lean()
-        .then(item => { return res.render('edit', { item, categories }) })
-        .catch(err => console.log(err))
-    })
-    .catch(err => console.log(err))
-})
-
 
 // 修改支出
 router.put('/:id', (req, res) => {
