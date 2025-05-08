@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Expense = require('../../models/Expense')
-const Category = require('../../models/Category')
+
 const expenseController = require('../../controllers/expenseController')
 
 // 新增頁面
