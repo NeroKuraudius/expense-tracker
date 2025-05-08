@@ -12,6 +12,10 @@ const expenseController = {
     // 修改支出
     putExpense: (req,res,next)=>{
         expenseService.putExpense(req, (err,data) => err ? next(err): res.redirect('/'))
+    },
+    // 刪除支出
+    deleteExpense: (req,res,next)=>{
+        expenseService.deleteExpense(req, (err,data) => err ? next(err): res.redirect('/'))
     }
 }
 

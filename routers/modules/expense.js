@@ -14,15 +14,7 @@ router.get('/edit/:id', expenseController.editExpense)
 router.put('/:id', expenseController.putExpense)
 
 // 刪除支出
-router.delete('/:id', (req, res) => {
-  const userId = req.user._id
-  const _id = req.params.id
-
-  return Expense.findOne({ userId, _id })
-    .then(item => item.deleteOne({ _id })) // 舊版是 item.remove()
-    .then(() => { return res.redirect('/') })
-    .catch(error => console.log(error))
-})
+router.delete('/:id', expenseController.deleteExpense)
 
 // 新增支出
 router.post('/', (req, res) => {
