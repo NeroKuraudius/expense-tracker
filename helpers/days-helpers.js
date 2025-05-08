@@ -1,4 +1,4 @@
-function getDaysInCurrentMonth() {
+const getDaysInCurrentMonth = () => {
     const now = new Date()
     const today = now.getDate()
     const month = now.getMonth()

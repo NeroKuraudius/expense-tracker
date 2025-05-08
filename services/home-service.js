@@ -1,7 +1,9 @@
 const Expense = require('../models/Expense')
 const Category = require('../models/Category')
 
-const getDaysInCurrentMonth = require('./utils/daysHandler')
+const getDaysInCurrentMonth = require('../helpers/days-helpers')
+const costCalculator = require('../helpers/calculation-helpers')
+const { getOffset, getPagination } = require('../helpers/pagination-helpers')
 
 const homeService = {
     // 進入首頁
@@ -10,6 +12,11 @@ const homeService = {
         const budget = req.user.budget
         const userId = req.user._id
         
+        // 取得分頁列參數
+        const page = Number(req.query.page) || 1
+        const limit = 10
+        const offset = getOffset(limit, page)
+
         // 取得當天的年/月/日
         const theDay = new Date()
         const thisYear = theDay.getFullYear()
@@ -25,18 +32,18 @@ const homeService = {
                 .populate('categoryId')
                 .lean()
                 .sort({ date: 'desc' })
-                .then((items) => {
-                    let totalAmount = 0
-                    items.forEach(item => {
-                    totalAmount += item.cost
-                    })
-        
+                .skip(offset)
+                .limit(limit)
+                .then(async(items) => {
+                    const { totalAmount, totalCost } = await costCalculator(userId, selectTime)
+                    const pagination = getPagination(limit, page, totalAmount)
+
                     if (budget) {
-                    const leftDays = getDaysInCurrentMonth()
-                    const dayCost = Math.round((budget-totalAmount) / leftDays)
-                    return cb(null, { items, categories, totalAmount, thisYear, thisMonth, selectTime, dayCost })
+                        const leftDays = getDaysInCurrentMonth()
+                        const dayCost = Math.round((budget-totalCost) / leftDays)
+                        return cb(null, { items, categories, totalCost, thisYear, thisMonth, selectTime, dayCost, pagination })
                     }
-                    return cb(null, { items, categories, totalAmount, thisYear, thisMonth, selectTime })
+                    return cb(null, { items, categories, totalCost, thisYear, thisMonth, selectTime, pagination })
                 })
             .catch(err => cb(err.message))
         })
@@ -66,19 +73,17 @@ const homeService = {
                 .populate('categoryId')
                 .lean()
                 .sort({ date: 'desc' })
-                .then(items => {
-                let totalAmount = 0
-                items.forEach(item => {
-                    totalAmount += item.cost
-                })
+                .then(async(items) => {
+                    const { totalAmount, totalCost } = await costCalculator(userId, selectTime)
+                    const pagination = await getPagination()
 
                 if (budget) {
                     const leftDays = getDaysInCurrentMonth()
-                    const dayCost = Math.round((budget-totalAmount) / leftDays)
-                    return cb(null, { items, categories, categoryId, totalAmount, thisYear, thisMonth, selectTime, dayCost })
+                    const dayCost = Math.round((budget-totalCost) / leftDays)
+                    return cb(null, { items, categories, categoryId, totalCost, thisYear, thisMonth, selectTime, dayCost })
                 }
 
-                return cb(null, { items, categories, categoryId, totalAmount, thisYear, thisMonth, selectTime })
+                return cb(null, { items, categories, categoryId, totalCost, thisYear, thisMonth, selectTime })
                 })
                 .catch(err => cb(err.message))
             })
