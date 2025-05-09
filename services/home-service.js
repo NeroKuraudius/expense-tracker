@@ -18,27 +18,34 @@ const homeService = {
         const offset = getOffset(limit, page)
 
         // 取得當天的年/月/日
-        const selectTime = Number(req.query.selectTime) || getYearAndMonthOfToday()
+        const selectTime = req.query.selectTime || getYearAndMonthOfToday()
+
+        // 取得支出類別
+        const categoryId = req.query.categoryId || 'DEFAULT'
+
+        // Expense的搜尋條件
+        const condition = { userId, date: { $regex: `^${selectTime}` }}
+        if (categoryId !== 'DEFAULT' && categoryId !== 'ALL') condition.categoryId = categoryId
     
         return Category.find()
         .lean()
         .then((categories) => {
-            return Expense.find({ userId, date: { $regex: `^${selectTime}` } })
+            return Expense.find(condition)
                 .populate('categoryId')
                 .lean()
                 .sort({ date: 'desc' })
                 .skip(offset)
                 .limit(limit)
                 .then(async(items) => {
-                    const { totalAmount, totalCost } = await costCalculator(userId, selectTime)
+                    const { totalAmount, totalCost } = await costCalculator(userId, selectTime, categoryId)
                     const pagination = getPagination(limit, page, totalAmount)
 
                     if (budget) {
                         const leftDays = getDaysInCurrentMonth()
                         const dayCost = Math.round((budget-totalCost) / leftDays)
-                        return cb(null, { items, categories, totalCost, thisYear, thisMonth, selectTime, dayCost, pagination })
+                        return cb(null, { items, categories, categoryId, totalCost, selectTime, dayCost, pagination, page })
                     }
-                    return cb(null, { items, categories, totalCost, thisYear, thisMonth, selectTime, pagination })
+                    return cb(null, { items, categories, categoryId, totalCost, selectTime, pagination, page })
                 })
             .catch(err => cb(err.message))
         })
