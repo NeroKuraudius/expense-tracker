@@ -1,6 +1,6 @@
 {{!-- 選單 --}}
 <div class="mt-5 form-container">
-  <form action="/" method="POST">
+  <form action="/" method="GET">
     <div class="mb-5">
         <h2 style="text-align:center;font-weight:bold;">
           帳目區間
@@ -34,7 +34,7 @@
 
   <div style="text-align:center">
     <h4 style="font-weight:bold">支出總金額</h4>
-    <h1 name="totalAmount" style="font-weight:bold;color:darkgoldenrod">{{totalAmount}}</h1>
+    <h1 name="totalAmount" style="font-weight:bold;color:darkgoldenrod">{{totalCost}}</h1>
   </div>
 </div>
 
@@ -78,7 +78,7 @@
   <ul class="pagination">
     {{!-- 往前箭頭 --}}
     <li class="page-item">
-      <a class="page-link" href="/?page={{pagination.prevPage}}" aria-label="Previous">
+      <a class="page-link" href="/?page={{pagination.prevPage}}&selectTime={{selectTime}}&categoryId={{categoryId}}" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
@@ -93,7 +93,7 @@
     </li>
     {{else}}
     <li class="page-item">
-      <a class="page-link" href="/?page={{this}}">
+      <a class="page-link" href="/?page={{this}}&selectTime={{selectTime}}&categoryId={{categoryId}}">
         {{this}}
       </a>
     </li>
@@ -102,7 +102,7 @@
 
     {{!-- 往後箭頭 --}}
     <li class="page-item">
-      <a class="page-link" href="/restaurants?page={{pagination.nextPage}}" aria-label="Next">
+      <a class="page-link" href="/?page={{pagination.nextPage}}&selectTime={{selectTime}}&categoryId={{categoryId}}" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>

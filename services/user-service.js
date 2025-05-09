@@ -1,4 +1,3 @@
-const { getRegister } = require('../controllers/userController')
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 

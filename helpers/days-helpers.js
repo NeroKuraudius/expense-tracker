@@ -1,3 +1,15 @@
+const getYearAndMonthOfToday = ()=> {
+    // 取得當天的年/月/日
+    const theDay = new Date()
+    const thisYear = theDay.getFullYear()
+    const thisMonth = theDay.getMonth() + 1  // 月份為0~11
+
+    let result = `${thisYear}-${thisMonth}`
+    if (result.length < 7) result = result.replace('-', '-0')
+
+    return result
+}
+
 const getDaysInCurrentMonth = () => {
     const now = new Date()
     const today = now.getDate()
@@ -11,4 +23,4 @@ const getDaysInCurrentMonth = () => {
     return lastDayThisMonth.getDate() - today + 1
 }
 
-module.exports = getDaysInCurrentMonth
+module.exports = { getYearAndMonthOfToday, getDaysInCurrentMonth }
