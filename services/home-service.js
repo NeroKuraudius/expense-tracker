@@ -33,7 +33,7 @@ const homeService = {
             return Expense.find(condition)
                 .populate('categoryId')
                 .lean()
-                .sort({ date: 'desc' })
+                .sort({ date: 'desc', _id: 'desc' })
                 .skip(offset)
                 .limit(limit)
                 .then(async(items) => {
