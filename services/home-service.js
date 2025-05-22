@@ -41,9 +41,16 @@ const homeService = {
                     const pagination = getPagination(limit, page, totalAmount)
 
                     if (budget) {
-                        const leftDays = getDaysInCurrentMonth()
-                        const dayCost = Math.round((budget-totalCost) / leftDays)
-                        return cb(null, { items, categories, categoryId, totalCost, selectTime, dayCost, pagination, page })
+                        const surplus = budget - totalCost
+
+                        if (surplus > 0){
+                            const leftDays = getDaysInCurrentMonth()
+                            const dayCost = Math.round(surplus / leftDays)
+                            return cb(null, { items, categories, categoryId, totalCost, selectTime, pagination, page, dayCost })
+                        }else{
+                            const dayCost = surplus
+                            return cb(null, { items, categories, categoryId, totalCost, selectTime, pagination, page, dayCost })
+                        }
                     }
                     return cb(null, { items, categories, categoryId, totalCost, selectTime, pagination, page })
                 })
