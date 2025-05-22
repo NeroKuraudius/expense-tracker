@@ -13,9 +13,8 @@ module.exports = {
       return options.inverse(this)
     }
 
-    const numA = Number(a)
-    const numB = Number(b)
-
+    const numA = typeof a === 'number' ? a :Number(a)
+    const numB = typeof b === 'number' ? b :Number(b)
     if (isNaN(numA) || isNaN(numB)){
       return options.inverse(this)
     }
