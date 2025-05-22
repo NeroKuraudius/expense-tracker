@@ -40,7 +40,7 @@ const homeService = {
                     const { totalAmount, totalCost } = await costCalculator(userId, selectTime, categoryId)
                     const pagination = getPagination(limit, page, totalAmount)
 
-                    if (budget) {
+                    if (budget && categoryId.length < 10) {
                         const surplus = budget - totalCost
 
                         if (surplus > 0){

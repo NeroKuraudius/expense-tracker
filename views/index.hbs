@@ -28,10 +28,10 @@
   <div class="me-3" style="text-align:end">
     {{#ifCond categoryId 'ALL'}}
       <h6 style="color:grey">
-        {{#ifGreaterThan datCost 0}}
+        {{#ifGreaterThan dayCost 0}}
           可支配金額: {{dayCost}} 元/日
         {{else}}
-          本月超支: {{datCost}} 元
+          本月超支: {{dayCost}} 元
         {{/ifGreaterThan}}
       </h6>
     {{/ifCond}}
