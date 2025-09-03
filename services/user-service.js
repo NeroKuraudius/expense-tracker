@@ -65,18 +65,27 @@ const userService = {
         const email = req.user.email
         const userId = req.user._id
 
-        // 啟動 transaction
+        // 建立 session
         const session = await mongoose.startSession()
 
         try{
-            const user = await User.findOne({ email }).lean()
+            // 啟動 transaction
+            session.startTransaction()
+
+            const user = await User.findOne({ email }).lean().session(session)
             if (!user){
+                // // transaction 回滾
+                await session.abortTransaction()
+
                 req.flash('warningMsg', '使用者不存在')
                 return cb(null, {})
             }
 
             const isMatch = await bcrypt.compare(password, user.password)
             if (!isMatch) {
+                // // transaction 回滾
+                await session.abortTransaction()
+
                 req.flash('warningMsg', '密碼輸入錯誤')
                 return cb(null, {})
             }
@@ -102,12 +111,14 @@ const userService = {
             req.flash('successMsg', '資料修改成功')
             return cb(null, {})
         }catch(err){
-            // transaction 回滾
-            await session.abortTransaction()
+            if (session.inTransaction()) {
+                // transaction 回滾
+                await session.abortTransaction()
+            }
 
             console.error('[Service] 更新資料時發生錯誤:', err)
             req.flash('errorMsg', '資料修改失敗，請稍後再試。')
-            return cb(err.message, {})
+            return cb(err.message)
         }finally{
             // transaction 結束
             session.endSession()

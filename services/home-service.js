@@ -56,7 +56,7 @@ const homeService = {
 
         }catch(err){
             console.log('[Service] 首頁渲染失敗:', err)
-            return cb(err.message, {})
+            return cb(err.message)
         }
     }
 }
