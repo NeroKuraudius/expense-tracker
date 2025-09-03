@@ -1,5 +1,8 @@
 const User = require('../models/User')
+const Budget = require('../models/Budget')
 const bcrypt = require('bcryptjs')
+const mongoose = require('mongoose')
+const { getYearAndMonthOfToday } = require('../helpers/days-helpers')
 
 const userService = {
     // 登出
@@ -47,12 +50,12 @@ const userService = {
     },
 
     // 修改使用者資料
-    postSetting: (req,cb)=>{
+    postSetting: async(req,cb)=>{
         let { name, budget, password } = req.body
 
         if (name.trim().length === 0) {
             req.flash('warningMsg', '姓名不可為空')
-            return cb(null, { })
+            return cb(null, {})
         }
 
         if (!budget || budget === 0){
@@ -60,25 +63,55 @@ const userService = {
         }
 
         const email = req.user.email
-        User.findOne({ email })
-        .lean()
-        .then(user=>{
-            return bcrypt.compare(password, user.password)
-                .then(async (isMatch)=>{
-                    if (isMatch){
-                        await User.updateOne({ email }, {$set: { name, budget } })
-                    }else{
-                        req.flash('warningMsg', '密碼輸入錯誤')
-                        return cb(null, { })
-                    }
-                })
-                .then(() => {
-                    req.flash('successMsg', '資料修改成功')
-                    return cb(null, { })
-                })
-                .catch(err => cb(err.message))
-        })
-        .catch(err => cb(err.message))
+        const userId = req.user._id
+
+        // 啟動 transaction
+        const session = await mongoose.startSession()
+
+        try{
+            const user = await User.findOne({ email }).lean()
+            if (!user){
+                req.flash('warningMsg', '使用者不存在')
+                return cb(null, {})
+            }
+
+            const isMatch = await bcrypt.compare(password, user.password)
+            if (!isMatch) {
+                req.flash('warningMsg', '密碼輸入錯誤')
+                return cb(null, {})
+            }
+
+            await User.updateOne(
+                { email }, 
+                { $set: { name } }, 
+                { session }
+            )
+
+            if(budget){
+                const month = getYearAndMonthOfToday()
+                await Budget.updateOne(
+                    { userId, month },
+                    { $set: { amount: budget } }, 
+                    { upsert: true, session }
+                )
+            }
+            
+            // transaction 提交
+            await session.commitTransaction()
+
+            req.flash('successMsg', '資料修改成功')
+            return cb(null, {})
+        }catch(err){
+            // transaction 回滾
+            await session.abortTransaction()
+
+            console.error('[Service] 更新資料時發生錯誤:', err)
+            req.flash('errorMsg', '資料修改失敗，請稍後再試。')
+            return cb(err, {})
+        }finally{
+            // transaction 結束
+            session.endSession()
+        }
     }
 }
 
