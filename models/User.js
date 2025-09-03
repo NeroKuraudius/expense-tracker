@@ -13,11 +13,6 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  budget:{
-    type: Number,
-    required: false,
-    default: null
-  },
   createAt: {
     type: Date,
     default: Date.now
