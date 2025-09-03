@@ -107,7 +107,7 @@ const userService = {
 
             console.error('[Service] 更新資料時發生錯誤:', err)
             req.flash('errorMsg', '資料修改失敗，請稍後再試。')
-            return cb(err, {})
+            return cb(err.message, {})
         }finally{
             // transaction 結束
             session.endSession()

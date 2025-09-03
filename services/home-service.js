@@ -1,5 +1,6 @@
 const Expense = require('../models/Expense')
 const Category = require('../models/Category')
+const Budget = require('../models/Budget')
 
 const { getYearAndMonthOfToday, getDaysInCurrentMonth } = require('../helpers/days-helpers')
 const costCalculator = require('../helpers/calculation-helpers')
@@ -7,9 +8,8 @@ const { getOffset, getPagination } = require('../helpers/pagination-helpers')
 
 const homeService = {
     // 進入首頁
-    getHome: (req,cb)=>{
+    getHome: async(req,cb)=>{
         // 取得使用者相關資訊
-        const budget = req.user.budget
         const userId = req.user._id
         
         // 取得分頁列參數
@@ -27,36 +27,37 @@ const homeService = {
         const condition = { userId, date: { $regex: `^${selectTime}` }}
         if (categoryId !== 'DEFAULT' && categoryId !== 'ALL') condition.categoryId = categoryId
     
-        return Category.find()
-        .lean()
-        .then((categories) => {
-            return Expense.find(condition)
-                .populate('categoryId')
-                .lean()
-                .sort({ date: 'desc', _id: 'desc' })
-                .skip(offset)
-                .limit(limit)
-                .then(async(items) => {
-                    const { totalAmount, totalCost } = await costCalculator(userId, selectTime, categoryId)
-                    const pagination = getPagination(limit, page, totalAmount)
+        try{
+            const budget = await Budget.findOne({ userId, month: selectTime})
+            const categories = await Category.find().lean()
+            const expenses = await Expense.find(condition)
+            .populate('categoryId')
+            .lean()
+            .sort({ date: 'desc', _id: 'desc' })
+            .skip(offset)
+            .limit(limit)
 
-                    if (budget && categoryId.length < 10) {
-                        const surplus = budget - totalCost
+            const { totalAmount, totalCost } = await costCalculator(userId, selectTime, categoryId)
+            const pagination = getPagination(limit, page, totalAmount)
 
-                        if (surplus > 0){
-                            const leftDays = getDaysInCurrentMonth()
-                            const dayCost = Math.round(surplus / leftDays)
-                            return cb(null, { items, categories, categoryId, totalCost, selectTime, pagination, page, dayCost })
-                        }else{
-                            const dayCost = surplus
-                            return cb(null, { items, categories, categoryId, totalCost, selectTime, pagination, page, dayCost })
-                        }
-                    }
-                    return cb(null, { items, categories, categoryId, totalCost, selectTime, pagination, page })
-                })
-            .catch(err => cb(err.message))
-        })
-        .catch(err => cb(err.message))
+            if (budget && categoryId.length < 10) {
+                const surplus = budget.amount - totalCost
+
+                if (surplus > 0){
+                    const leftDays = getDaysInCurrentMonth()
+                    const dayCost = Math.round(surplus / leftDays)
+                    return cb(null, { expenses, categories, categoryId, totalCost, selectTime, pagination, page, dayCost })
+                }else{
+                    const dayCost = surplus
+                    return cb(null, { expenses, categories, categoryId, totalCost, selectTime, pagination, page, dayCost })
+                }
+            }
+            return cb(null, { expenses, categories, categoryId, totalCost, selectTime, pagination, page })
+
+        }catch(err){
+            console.log('[Service] 首頁渲染失敗:', err)
+            return cb(err.message, {})
+        }
     }
 }
 
