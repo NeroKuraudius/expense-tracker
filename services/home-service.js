@@ -28,7 +28,7 @@ const homeService = {
         if (categoryId !== 'DEFAULT' && categoryId !== 'ALL') condition.categoryId = categoryId
     
         try{
-            const budget = await Budget.findOne({ userId, month: selectTime})
+            const budget = await Budget.findOne({ userId, month: selectTime}).lean()
             const categories = await Category.find().lean()
             const expenses = await Expense.find(condition)
             .populate('categoryId')
@@ -40,7 +40,7 @@ const homeService = {
             const { totalAmount, totalCost } = await costCalculator(userId, selectTime, categoryId)
             const pagination = getPagination(limit, page, totalAmount)
 
-            if (budget && categoryId.length < 10) {
+            if (budget.amount > 0 && categoryId.length < 10) {
                 const surplus = budget.amount - totalCost
 
                 if (surplus > 0){

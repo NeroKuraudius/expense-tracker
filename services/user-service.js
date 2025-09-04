@@ -57,7 +57,7 @@ const userService = {
 
         try{
             const budget = await Budget.findOne({ userId, month }).lean()
-            if (budget){
+            if (budget && budget.amount > 0){
                 return cb(null, { user: req.user, budget: budget.amount })
             }else{
                 return cb(null, { user: req.user })
@@ -78,7 +78,7 @@ const userService = {
         }
 
         if (!budget || budget === 0){
-            budget = null
+            budget = 0
         }
 
         const email = req.user.email
