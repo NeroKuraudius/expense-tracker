@@ -12,6 +12,10 @@ const userController = {
             Object.keys(data).length === 0 ? res.redirect('/users/login') : res.render('register', data)
         })
     },
+    // 修改頁面
+    getSetting: (req,res,next)=>{
+        userService.getSetting(req, (err,data)=> err ? next(err) : res.render('setting', data))
+    },
     // 修改使用者資料
     postSetting: (req,res,next)=>{
         userService.postSetting(req, (err,data)=> err ? next(err) : res.redirect('/users/setting'))

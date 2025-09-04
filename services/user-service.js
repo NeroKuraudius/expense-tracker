@@ -48,6 +48,23 @@ const userService = {
             })
             .catch(err => cb(err.message))
     },
+    // 修改頁面
+    getSetting: async(req,cb)=>{
+        const userId = req.user._id
+        const month = getYearAndMonthOfToday()
+
+        try{
+            const budget = await Budget.findOne({ userId, month }).lean()
+            if (budget){
+                return cb(null, { user: req.user, budget: budget.amount })
+            }else{
+                return cb(null, { user: req.user })
+            }
+        }catch(err){
+            console.error('[Service]使用者修改頁面渲染失敗')
+            return cb(err.message)
+        }
+    },
 
     // 修改使用者資料
     postSetting: async(req,cb)=>{

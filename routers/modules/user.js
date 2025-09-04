@@ -12,7 +12,7 @@ router.get('/login', (req, res) => { return res.render('login') })
 router.get('/register', (req, res) => { return res.render('register') })
 
 // 設定修改頁面
-router.get('/setting', authenticator, (req, res) => { return res.render('setting', { user : req.user }) })
+router.get('/setting', authenticator, userController.getSetting)
 
 // 登出
 router.get('/logout', authenticator, userController.getLogout)
