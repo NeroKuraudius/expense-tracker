@@ -11,12 +11,12 @@ const userService = {
         if (err) return cb(err.message)
 
         req.flash('successMsg', '您已成功登出')
-        return cb(null, { })
+        return cb(null, {})
         })
     },
 
     // 註冊
-    postRegister: (req,cb)=>{
+    postRegister: async(req,cb)=>{
         const { name, email, password, confirmPassword } = req.body
         const errs = []
     
@@ -27,27 +27,29 @@ const userService = {
             errs.push({ errMsg: '所輸入的密碼不一致' })
         }
         if (errs.length) {
-            return cb(null, { errs, name, email, password, confirmPassword})
+            return cb(null, { errs, name, email, password, confirmPassword })
         }
     
-        return User.findOne({ email })
-            .lean()
-            .then(user => {
-                if (user) {
-                    errs.push({ errMsg: '該帳號已註冊' })
-                    return cb(null, { errs, name, email, password, confirmPassword })
-                }
-                return bcrypt.genSalt(12)
-                .then(salt => bcrypt.hash(password, salt))
-                .then(hash => User.create({ name, email, password: hash }))
-                .then(() => {
-                    req.flash('successMsg', '請用新帳號重新登入')
-                    return cb(null, { })
-                })
-                .catch(err => cb(err.message))
-            })
-            .catch(err => cb(err.message))
+        try{
+            const user = await User.findOne({ email }).lean()
+            if (user) {
+                errs.push({ errMsg: '該帳號已註冊' })
+                return cb(null, { errs, name, email, password, confirmPassword })
+            }
+
+            const hash = await bcrypt.hash(password, 12)
+            const newUser = await User.create({ name, email, password: hash })
+            if (newUser){
+                req.flash('successMsg', '請用新帳號重新登入')
+                return cb(null, {})
+            }
+
+        }catch(err){
+            console.error('[Service] 使用者註冊失敗', err)
+            return cb(err.message, { errs:[ {errMsg: '註冊失敗，請稍後再試'} ], name, email, password, confirmPassword })
+        }
     },
+
     // 修改頁面
     getSetting: async(req,cb)=>{
         const userId = req.user._id
@@ -61,7 +63,7 @@ const userService = {
                 return cb(null, { user: req.user })
             }
         }catch(err){
-            console.error('[Service]使用者修改頁面渲染失敗')
+            console.error('[Service] 使用者修改頁面渲染失敗', err)
             return cb(err.message)
         }
     },
