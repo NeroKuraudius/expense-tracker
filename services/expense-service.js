@@ -1,5 +1,5 @@
 const Expense = require('../models/Expense')
-const Category = require('..//models/Category')
+const Category = require('../models/Category')
 
 const expenseService = {
     // 新增頁面
@@ -42,6 +42,7 @@ const expenseService = {
         try{
             const updatedExpense = await Expense.findOneAndUpdate({ _id, userId }, { name, date, categoryId, cost })
             if (updatedExpense){
+                console.log(`[Service] 使用者 ${userId} 修改支出成功`)
                 return cb(null, {})
             }else{
                 return cb(null, { errs: [{ errMsg: '支出修改失敗' }] })
@@ -61,6 +62,7 @@ const expenseService = {
             const deletedExpense = await Expense.findOneAndDelete({ userId, _id })
         
             if (deletedExpense) {
+                console.log(`[Service] 使用者 ${userId} 刪除支出成功`)
                 return cb(null, {})
             } else {
                 return cb(null, { errs: [{ errMsg: '支出刪除失敗' }] })
@@ -84,6 +86,7 @@ const expenseService = {
 
             const newExpense = await Expense.create({ name, date, cost, categoryId, userId })
             if (newExpense){
+                console.log(`[Service] 使用者 ${userId} 新增支出成功`)
                 return cb(null, {})
             }else{
                 return cb(null, { errs: [{ errMsg: '支出新增失敗' }]})

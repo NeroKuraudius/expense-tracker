@@ -40,6 +40,7 @@ const userService = {
             const hash = await bcrypt.hash(password, 12)
             const newUser = await User.create({ name, email, password: hash })
             if (newUser){
+                console.log(`[Service] 使用者 ${name} 註冊成功`)
                 req.flash('successMsg', '請用新帳號重新登入')
                 return cb(null, {})
             }
@@ -127,6 +128,7 @@ const userService = {
             // transaction 提交
             await session.commitTransaction()
 
+            console.log(`[Service] 使用者 ${userId} 個人資料修改成功`)
             req.flash('successMsg', '資料修改成功')
             return cb(null, {})
         }catch(err){
@@ -134,8 +136,7 @@ const userService = {
                 // transaction 回滾
                 await session.abortTransaction()
             }
-
-            console.error('[Service] 更新資料時發生錯誤:', err)
+            console.error('[Service] 更新個人資料時發生錯誤:', err)
             req.flash('errorMsg', '資料修改失敗，請稍後再試。')
             return cb(err.message)
         }finally{
