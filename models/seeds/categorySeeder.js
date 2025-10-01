@@ -24,17 +24,14 @@ db.once('open', async() => {
     const dataCheck2 = await Category.findOne({name:'交通出行'})
     if (dataCheck1 && dataCheck2) {
       console.log('No running categorySeeder')
-      db.close()
-      process.exit()
     }else{
       const newData = await Category.create(categoryList)
       console.log('categorySeeder running finished!')
-      db.close()
-      process.exit()
     }
   }catch(err){
-    console.log('categorySeeder run failed.')
+    console.log(`categorySeeder run failed: ${err.message}`)
+  }finally{
     db.close()
-    process.exit()
-  }   
+    process.exit(1)
+  }
 })

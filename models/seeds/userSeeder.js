@@ -23,8 +23,6 @@ db.once('open', async () => {
     const testUserCheck = await User.findOne({name:'TEST'})
     if (testUserCheck) {
       console.log('No running userSeeder')
-      db.close()
-      process.exit()
     }else{
       const salt = await bcrypt.genSalt(12)
       const hash = await bcrypt.hash(SEED_USER.password, salt)
@@ -34,12 +32,11 @@ db.once('open', async () => {
         password: hash
       })
       console.log('userSeeder running finished!')
-      db.close()
-      process.exit()
     }
   }catch(err){
-    console.log('userSeeder run failed.')
+    console.log(`userSeeder run failed: ${err.message}`)
+  }finally{
     db.close()
-    process.exit()
-  }   
+    process.exit(1)
+  }
 })
