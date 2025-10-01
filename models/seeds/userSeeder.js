@@ -37,6 +37,6 @@ db.once('open', async () => {
     console.log(`userSeeder run failed: ${err.message}`)
   }finally{
     db.close()
-    process.exit(1)
+    process.exit()
   }
 })

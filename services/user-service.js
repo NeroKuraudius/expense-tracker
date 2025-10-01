@@ -92,7 +92,7 @@ const userService = {
             // 啟動 transaction
             session.startTransaction()
 
-            const user = await User.findOne({ email }, null, { session }).lean()
+            const user = await User.findOne({ email }).session(session).lean()
             if (!user){
                 // // transaction 回滾
                 await session.abortTransaction()
