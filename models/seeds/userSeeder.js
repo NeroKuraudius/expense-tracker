@@ -20,7 +20,7 @@ db.on('error', () => {
 })
 db.once('open', async () => {
   try{
-    const testUserCheck = await User.findOne({name:'TEST'})
+    const testUserCheck = await User.exists({ name:'TEST' })
     if (testUserCheck) {
       console.log('No running userSeeder')
     }else{

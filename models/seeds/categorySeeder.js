@@ -20,8 +20,8 @@ db.on('error', () => {
 })
 db.once('open', async() => {
   try{
-    const dataCheck1 = await Category.findOne({name:'其他'})
-    const dataCheck2 = await Category.findOne({name:'交通出行'})
+    const dataCheck1 = await Category.exists({ name:'其他' })
+    const dataCheck2 = await Category.exists({ name:'交通出行' })
     if (dataCheck1 && dataCheck2) {
       console.log('No running categorySeeder')
     }else{
