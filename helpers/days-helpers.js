@@ -10,8 +10,11 @@ const getYearAndMonthOfToday = ()=> {
     return result
 }
 
-const getDaysInCurrentMonth = () => {
+const getDaysInCurrentMonth = (selectTime) => {
     const now = new Date()
+    const theDay = new Date(selectTime)
+    if (now > theDay) return 1
+
     const today = now.getDate()
     const month = now.getMonth()
     const year = now.getFullYear()

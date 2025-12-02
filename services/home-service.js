@@ -44,7 +44,7 @@ const homeService = {
                 const surplus = budget.amount - totalCost
 
                 if (surplus > 0){
-                    const leftDays = getDaysInCurrentMonth()
+                    const leftDays = getDaysInCurrentMonth(selectTime)
                     const dayCost = Math.round(surplus / leftDays)
                     return cb(null, { expenses, categories, categoryId, totalCost, selectTime, pagination, page, dayCost })
                 }else{
