@@ -13,11 +13,11 @@ const getYearAndMonthOfToday = ()=> {
 const getDaysInCurrentMonth = (selectTime) => {
     const now = new Date()
     const theDay = new Date(selectTime)
-    if (now > theDay) return 1
+    if (now.getMonth() > theDay.getMonth()) return 1
 
-    const today = now.getDate()
-    const month = now.getMonth()
-    const year = now.getFullYear()
+    const today = now.getDate() // 1 (int)
+    const month = now.getMonth() // 11 (int, 0~11)
+    const year = now.getFullYear() // 2025 (int)
 
     const firstDayNextMonth = new Date(year, month + 1, 1)
     const lastDayThisMonth = new Date(firstDayNextMonth - 1)
