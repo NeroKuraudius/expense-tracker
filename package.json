@@ -8,7 +8,7 @@
     "start": "npm run seed && node app.js",
     "dev": "nodemon app.js",
     "engines": {
-      "node": ">=24.22.1"
+      "node": ">=22.23.4"
     }
   },
   "keywords": [],
